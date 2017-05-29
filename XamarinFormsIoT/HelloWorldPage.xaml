@@ -5,10 +5,18 @@
     <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center" x:Name="_mStackLayout">
         <Label Text="Hello World!" />
         <Button Text="Play Sound" Clicked="Button_Clicked" BackgroundColor="Gray" />
-        <Button Text="Blue On" Clicked="OnClickBlueOn"  BackgroundColor="Aqua" />
-        <Button Text="Blue Off" Clicked="OnClickBlueOff"  BackgroundColor="Aqua" />
-        <Button Text="Red On" Clicked="OnClickRedOn"  BackgroundColor="Red" />
-        <Button Text="Red Off" Clicked="OnClickRedOff"  BackgroundColor="Red" />
+        <StackLayout Orientation="Horizontal">
+            <Button Text="Blue On" Clicked="OnClickBlueOn"  BackgroundColor="Aqua" />
+            <Button Text="Blue Off" Clicked="OnClickBlueOff"  BackgroundColor="Aqua" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Button Text="Red On" Clicked="OnClickRedOn"  BackgroundColor="Red" />
+            <Button Text="Red Off" Clicked="OnClickRedOff"  BackgroundColor="Red" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Button Text="Yellow On" Clicked="OnClickYellowOn"  BackgroundColor="Yellow" />
+            <Button Text="Yellow Off" Clicked="OnClickYellowOff"  BackgroundColor="Yellow" />
+        </StackLayout>
         <Button Text="Quit" Clicked="OnClickQuit" BackgroundColor="Gray" />
     </StackLayout>
 </ContentPage>
