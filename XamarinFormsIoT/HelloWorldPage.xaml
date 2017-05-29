@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinFormsIoT.HelloWorldPage">
+    <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center" x:Name="_mStackLayout">
+        <Label Text="Hello World!" />
+        <Button Text="Play Sound" Clicked="Button_Clicked" BackgroundColor="Gray" />
+        <Button Text="Blue On" Clicked="OnClickBlueOn"  BackgroundColor="Aqua" />
+        <Button Text="Blue Off" Clicked="OnClickBlueOff"  BackgroundColor="Aqua" />
+        <Button Text="Red On" Clicked="OnClickRedOn"  BackgroundColor="Red" />
+        <Button Text="Red Off" Clicked="OnClickRedOff"  BackgroundColor="Red" />
+        <Button Text="Quit" Clicked="OnClickQuit" BackgroundColor="Gray" />
+    </StackLayout>
+</ContentPage>
