@@ -81,6 +81,8 @@ namespace XamarinFormsIoT
                         // update text on the main thread
                         Device.BeginInvokeOnMainThread(async () =>
                         {
+                            await CrossMediaManager.Current.Play("ms-appx:///Assets/Pew.wav");
+
                             _mTextIR.Text = string.Format("IR: {0}", edge);
 
                             await Task.Delay(1000);
