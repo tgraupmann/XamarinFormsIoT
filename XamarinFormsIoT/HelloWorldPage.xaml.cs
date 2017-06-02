@@ -83,6 +83,22 @@ namespace XamarinFormsIoT
                     // subscribe to changes
                     _mPinIR.AddListenerValueChanged((sender,edge) =>
                     {
+                        if (null != _mPinBlue &&
+                            null != _mPinRed)
+                        {
+                            switch (edge)
+                            {
+                                case Portable_GpioPinEdge.FallingEdge:
+                                    _mPinBlue.Write(Portable_GpioPinValue.Low);
+                                    _mPinRed.Write(Portable_GpioPinValue.High);
+                                    break;
+                                case Portable_GpioPinEdge.RisingEdge:
+                                    _mPinRed.Write(Portable_GpioPinValue.Low);
+                                    _mPinBlue.Write(Portable_GpioPinValue.High);
+                                    break;
+                            }
+                        }
+
                         // update text on the main thread
                         Device.BeginInvokeOnMainThread(async () =>
                         {
@@ -98,6 +114,13 @@ namespace XamarinFormsIoT
 
                             _mTextIR.Text = "IR:";
                             _mAudioPlaying = false;
+
+                            if (null != _mPinBlue &&
+                                null != _mPinRed)
+                            {
+                                _mPinBlue.Write(Portable_GpioPinValue.High);
+                                _mPinRed.Write(Portable_GpioPinValue.High);
+                            }
 
                         });
 
