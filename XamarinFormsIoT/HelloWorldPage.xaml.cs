@@ -91,10 +91,12 @@ namespace XamarinFormsIoT
                                 case Portable_GpioPinEdge.FallingEdge:
                                     _mPinBlue.Write(Portable_GpioPinValue.Low);
                                     _mPinRed.Write(Portable_GpioPinValue.High);
+                                    _mPinYellow.Write(Portable_GpioPinValue.Low);
                                     break;
                                 case Portable_GpioPinEdge.RisingEdge:
                                     _mPinRed.Write(Portable_GpioPinValue.Low);
                                     _mPinBlue.Write(Portable_GpioPinValue.High);
+                                    _mPinYellow.Write(Portable_GpioPinValue.High);
                                     break;
                             }
                         }
@@ -120,6 +122,7 @@ namespace XamarinFormsIoT
                             {
                                 _mPinBlue.Write(Portable_GpioPinValue.High);
                                 _mPinRed.Write(Portable_GpioPinValue.High);
+                                _mPinYellow.Write(Portable_GpioPinValue.High);
                             }
 
                         });
@@ -128,6 +131,7 @@ namespace XamarinFormsIoT
                 }
             }
 
+            /*
             // update text on the main thread
             Device.BeginInvokeOnMainThread(async () =>
             {
@@ -135,6 +139,7 @@ namespace XamarinFormsIoT
                 await Task.Delay(600000);
                 DependencyService.Get<Portable_IQuit>().Quit();
             });
+            */
         }
 
         /// <summary>
