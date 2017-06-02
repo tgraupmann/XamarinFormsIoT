@@ -1,4 +1,5 @@
-﻿using Windows.Devices.Gpio;
+﻿using System.Collections.Generic;
+using Windows.Devices.Gpio;
 using Xamarin.Forms;
 using XamarinFormsIoT;
 
@@ -8,6 +9,34 @@ namespace XamarinFormsIoT
     public class UWP_GpioPin : Portable_IGpioPin
     {
         public GpioPin GpioPin { get; set; }
+
+        private List<GpioPinValueChangedEvent> ValueChanged = new List<GpioPinValueChangedEvent>();
+
+        public void AddListenerValueChanged(GpioPinValueChangedEvent e)
+        {
+            if (null == GpioPin)
+            {
+                return;
+            }
+            GpioPin.ValueChanged += GpioPin_ValueChanged;
+            ValueChanged.Add(e);
+        }
+
+        private void GpioPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs args)
+        {
+            for (int i = 0; i < ValueChanged.Count; ++i)
+            {
+                switch (args.Edge)
+                {
+                    case GpioPinEdge.FallingEdge:
+                        ValueChanged[i].Invoke(this, Portable_GpioPinEdge.FallingEdge);
+                        break;
+                    case GpioPinEdge.RisingEdge:
+                        ValueChanged[i].Invoke(this, Portable_GpioPinEdge.RisingEdge);
+                        break;
+                }
+            }
+        }
 
         public void SetDriveMode(Portable_GpioPinDriveMode output)
         {

@@ -73,6 +73,16 @@ namespace XamarinFormsIoT
                 if (null != _mPinIR)
                 {
                     _mPinIR.SetDriveMode(Portable_GpioPinDriveMode.Input);
+
+                    // subscribe to changes
+                    _mPinIR.AddListenerValueChanged((sender,edge) =>
+                    {
+                        // update text on the main thread
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            _mTextIR.Text = string.Format("IR: {0}", edge);
+                        });
+                    });
                 }
             }
         }
