@@ -132,7 +132,6 @@ namespace XamarinFormsIoT
             }
 
             /*
-            // update text on the main thread
             Device.BeginInvokeOnMainThread(async () =>
             {
                 // wait for 5 minutes and then auto close the app
