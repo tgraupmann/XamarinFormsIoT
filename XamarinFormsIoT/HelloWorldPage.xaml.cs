@@ -14,6 +14,7 @@ namespace XamarinFormsIoT
         private const int LED_PIN_BLUE = 2;
         private const int LED_PIN_RED = 10;
         private const int LED_PIN_YELLOW = 19;
+        private const int LED_PIN_IR = 18;
 
         /// <summary>
         /// GPIO controller interface for the portable library
@@ -26,6 +27,7 @@ namespace XamarinFormsIoT
         private Portable_IGpioPin _mPinBlue = null;
         private Portable_IGpioPin _mPinRed = null;
         private Portable_IGpioPin _mPinYellow = null;
+        private Portable_IGpioPin _mPinIR = null;
 
         public HelloWorldPage()
         {
@@ -65,6 +67,27 @@ namespace XamarinFormsIoT
                 {
                     _mPinYellow.SetDriveMode(Portable_GpioPinDriveMode.Output);
                 }
+
+                // setup ir receiver
+                _mPinIR = _mGpioController.OpenPin(LED_PIN_IR);
+                if (null != _mPinIR)
+                {
+                    _mPinIR.SetDriveMode(Portable_GpioPinDriveMode.Input);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Read IR values
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickButtonIR(object sender, EventArgs e)
+        {
+            if (null != _mPinIR)
+            {
+                Portable_GpioPinValue val = _mPinIR.Read();
+                _mTextIR.Text = string.Format("IR: {0}", val);
             }
         }
 
@@ -83,7 +106,7 @@ namespace XamarinFormsIoT
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Button_Clicked(object sender, EventArgs e)
+        private async void OnClickPlaySound(object sender, EventArgs e)
         {
             await CrossMediaManager.Current.Play("ms-appx:///Assets/Test.wav");
         }

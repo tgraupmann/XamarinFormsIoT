@@ -34,5 +34,18 @@ namespace XamarinFormsIoT
                     break;
             }
         }
+
+        public Portable_GpioPinValue Read()
+        {
+            var input = GpioPin.Read();
+            switch (input)
+            {
+                case GpioPinValue.Low:
+                    return Portable_GpioPinValue.Low;
+                case GpioPinValue.High:
+                    return Portable_GpioPinValue.High;
+            }
+            return Portable_GpioPinValue.High;
+        }
     }
 }
