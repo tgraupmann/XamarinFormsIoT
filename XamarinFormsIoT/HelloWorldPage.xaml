@@ -4,7 +4,7 @@
              x:Class="XamarinFormsIoT.HelloWorldPage">
     <StackLayout Orientation="Vertical"  HorizontalOptions="Center" VerticalOptions="Center" x:Name="_mStackLayout">
         <Label Text="Hello World!" />
-        <Label x:Name="_mTextIR" Text="IR: HIGH" />
+        <Label x:Name="_mTextIR" Text="IR:" />
         <Button Text="Get IR" Clicked="OnClickButtonIR" BackgroundColor="Gray" />
         <Button Text="Play Sound" Clicked="OnClickPlaySound" BackgroundColor="Gray" />
         <StackLayout Orientation="Horizontal">

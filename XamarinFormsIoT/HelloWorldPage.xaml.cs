@@ -1,5 +1,6 @@
 ﻿using Plugin.MediaManager;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -78,10 +79,15 @@ namespace XamarinFormsIoT
                     _mPinIR.AddListenerValueChanged((sender,edge) =>
                     {
                         // update text on the main thread
-                        Device.BeginInvokeOnMainThread(() =>
+                        Device.BeginInvokeOnMainThread(async () =>
                         {
                             _mTextIR.Text = string.Format("IR: {0}", edge);
+
+                            await Task.Delay(1000);
+
+                            _mTextIR.Text = "IR:";
                         });
+
                     });
                 }
             }
