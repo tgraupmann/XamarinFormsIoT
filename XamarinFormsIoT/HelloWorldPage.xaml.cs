@@ -127,6 +127,14 @@ namespace XamarinFormsIoT
                     });
                 }
             }
+
+            // update text on the main thread
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                // wait for 5 minutes and then auto close the app
+                await Task.Delay(600000);
+                DependencyService.Get<Portable_IQuit>().Quit();
+            });
         }
 
         /// <summary>
