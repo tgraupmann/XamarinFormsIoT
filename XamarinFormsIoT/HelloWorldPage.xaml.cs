@@ -30,6 +30,11 @@ namespace XamarinFormsIoT
         private Portable_IGpioPin _mPinYellow = null;
         private Portable_IGpioPin _mPinIR = null;
 
+        /// <summary>
+        /// Track when audio is playing
+        /// </summary>
+        private bool _mAudioPlaying = false;
+
         public HelloWorldPage()
         {
             InitializeComponent();
@@ -81,13 +86,19 @@ namespace XamarinFormsIoT
                         // update text on the main thread
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            await CrossMediaManager.Current.Play("ms-appx:///Assets/Pew.wav");
+                            if (!_mAudioPlaying)
+                            {
+                                _mAudioPlaying = true;
+                                await CrossMediaManager.Current.Play("ms-appx:///Assets/Pew.wav");
+                            }
 
                             _mTextIR.Text = string.Format("IR: {0}", edge);
 
                             await Task.Delay(1000);
 
                             _mTextIR.Text = "IR:";
+                            _mAudioPlaying = false;
+
                         });
 
                     });
