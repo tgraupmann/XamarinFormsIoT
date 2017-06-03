@@ -57,12 +57,16 @@ namespace XamarinFormsIoT
                         break;
                     case Portable_GpioPinValue.Low:
                         _mStrIR.Append("1");
+                        _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
                         break;
+                }
+                if (_mStrIR.Length > 1)
+                {
+                    _mTextIR.Text = _mStrIR.ToString();
                 }
                 if (_mTimerIR < DateTime.Now)
                 {
-                    _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
-                    _mTextIR.Text = _mStrIR.ToString();
+                    //_mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
                     if (_mStrIR.Length > 0)
                     {
                         _mStrIR.Remove(0, _mStrIR.Length);
