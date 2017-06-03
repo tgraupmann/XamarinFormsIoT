@@ -41,43 +41,49 @@ namespace XamarinFormsIoT
         /// </summary>
         private StringBuilder _mStrIR = new StringBuilder();
 
+        /// <summary>
+        /// Wait for quit
+        /// </summary>
+        private bool _mWaitForExit = true;
+
         public HelloWorldPage()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Read IR values
+        /// </summary>
         async void ReadIR()
         {
-            if (null != _mPinIR)
+            while (_mWaitForExit)
             {
-                switch (_mPinIR.Read())
+                if (null != _mPinIR)
                 {
-                    case Portable_GpioPinValue.High:
-                        _mStrIR.Append("0");
-                        break;
-                    case Portable_GpioPinValue.Low:
-                        _mStrIR.Append("1");
-                        _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
-                        break;
-                }
-                if (_mStrIR.Length > 1)
-                {
-                    _mTextIR.Text = _mStrIR.ToString();
-                }
-                if (_mTimerIR < DateTime.Now)
-                {
-                    //_mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
-                    if (_mStrIR.Length > 0)
+                    switch (_mPinIR.Read())
                     {
-                        _mStrIR.Remove(0, _mStrIR.Length);
+                        case Portable_GpioPinValue.High:
+                            _mStrIR.Append("0");
+                            break;
+                        case Portable_GpioPinValue.Low:
+                            _mStrIR.Append("1");
+                            break;
+                    }
+                    if (_mStrIR.Length > 35) // keep at a certain length
+                    {
+                        _mStrIR.Remove(0, 1);
+                    }
+                    if (_mStrIR.Length > 1) //display text
+                    {
+                        string text = _mStrIR.ToString();
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            _mTextIR.Text = text;
+                        });
                     }
                 }
-            }
-            Device.BeginInvokeOnMainThread(async () =>
-            {
                 await Task.Delay(TimeSpan.FromMilliseconds(0.5f));
-                ReadIR();
-            });
+            }
         }
 
         protected override void OnAppearing()
@@ -120,7 +126,10 @@ namespace XamarinFormsIoT
                 {
                     _mPinIR.SetDriveMode(Portable_GpioPinDriveMode.Input);
 
-                    ReadIR();
+                    Task.Run(() =>
+                    {
+                        ReadIR();
+                    });
 
                     /*
 
@@ -326,6 +335,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickQuit(object sender, EventArgs e)
         {
+            _mWaitForExit = false;
             DependencyService.Get<Portable_IQuit>().Quit();
         }
     }
