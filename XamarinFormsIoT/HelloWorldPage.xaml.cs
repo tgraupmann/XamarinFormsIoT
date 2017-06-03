@@ -73,16 +73,20 @@ namespace XamarinFormsIoT
                     {
                         _mStrIR.Remove(0, 1);
                     }
-                    if (_mStrIR.Length > 1) //display text
+                    if (_mTimerIR < DateTime.Now)
                     {
-                        string text = _mStrIR.ToString();
-                        Device.BeginInvokeOnMainThread(() =>
+                        _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                        if (_mStrIR.Length > 1) //display text
                         {
-                            _mTextIR.Text = text;
-                        });
+                            string text = _mStrIR.ToString();
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                _mTextIR.Text = text;
+                            });
+                        }
                     }
                 }
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5f));
+                await Task.Delay(1);
             }
         }
 
