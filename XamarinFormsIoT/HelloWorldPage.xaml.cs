@@ -1,5 +1,6 @@
 ﻿using Plugin.MediaManager;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -31,9 +32,14 @@ namespace XamarinFormsIoT
         private Portable_IGpioPin _mPinIR = null;
 
         /// <summary>
-        /// Track when audio is playing
+        /// Timer for IR stream
         /// </summary>
-        private bool _mAudioPlaying = false;
+        private DateTime _mTimerIR = DateTime.MinValue;
+
+        /// <summary>
+        /// Used to build the IR string
+        /// </summary>
+        private StringBuilder _mStrIR = new StringBuilder();
 
         public HelloWorldPage()
         {
@@ -83,6 +89,32 @@ namespace XamarinFormsIoT
                     // subscribe to changes
                     _mPinIR.AddListenerValueChanged((sender,edge) =>
                     {
+                        if (_mTimerIR < DateTime.Now)
+                        {
+                            if (_mStrIR.Length > 0)
+                            {
+                                _mStrIR.Remove(0, _mStrIR.Length);
+                            }
+                        }
+                        switch (edge)
+                        {
+                            case Portable_GpioPinEdge.FallingEdge:
+                                _mStrIR.Append(0);
+                                break;
+                            case Portable_GpioPinEdge.RisingEdge:
+                                _mStrIR.Append(1);
+                                break;
+                        }
+                        
+                        // capture for short interval
+                        _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
+
+                        // update text
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            _mTextIR.Text = _mStrIR.ToString();
+                        });
+
                         if (null != _mPinBlue &&
                             null != _mPinRed)
                         {
@@ -101,22 +133,10 @@ namespace XamarinFormsIoT
                             }
                         }
 
-                        // update text on the main thread
+                        // turn off LEDs
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            if (!_mAudioPlaying)
-                            {
-                                _mAudioPlaying = true;
-                                await CrossMediaManager.Current.Play("ms-appx:///Assets/Pew.wav");
-                            }
-
-                            _mTextIR.Text = string.Format("IR: {0}", edge);
-
                             await Task.Delay(1000);
-
-                            _mTextIR.Text = "IR:";
-                            _mAudioPlaying = false;
-
                             if (null != _mPinBlue &&
                                 null != _mPinRed)
                             {
