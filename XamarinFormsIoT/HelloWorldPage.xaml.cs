@@ -46,6 +46,36 @@ namespace XamarinFormsIoT
             InitializeComponent();
         }
 
+        async void ReadIR()
+        {
+            if (null != _mPinIR)
+            {
+                switch (_mPinIR.Read())
+                {
+                    case Portable_GpioPinValue.High:
+                        _mStrIR.Append("0");
+                        break;
+                    case Portable_GpioPinValue.Low:
+                        _mStrIR.Append("1");
+                        break;
+                }
+                if (_mTimerIR < DateTime.Now)
+                {
+                    _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                    _mTextIR.Text = _mStrIR.ToString();
+                    if (_mStrIR.Length > 0)
+                    {
+                        _mStrIR.Remove(0, _mStrIR.Length);
+                    }
+                }
+            }
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(0.5f));
+                ReadIR();
+            });
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -85,6 +115,10 @@ namespace XamarinFormsIoT
                 if (null != _mPinIR)
                 {
                     _mPinIR.SetDriveMode(Portable_GpioPinDriveMode.Input);
+
+                    ReadIR();
+
+                    /*
 
                     // subscribe to changes
                     _mPinIR.AddListenerValueChanged((sender,edge) =>
@@ -148,6 +182,8 @@ namespace XamarinFormsIoT
                         });
 
                     });
+
+                    */
                 }
             }
 
