@@ -54,39 +54,43 @@ namespace XamarinFormsIoT
         /// <summary>
         /// Read IR values
         /// </summary>
-        async void ReadIR()
+        void ReadIR()
         {
-            while (_mWaitForExit)
+            if (null != _mPinIR)
             {
-                if (null != _mPinIR)
+                switch (_mPinIR.Read())
                 {
-                    switch (_mPinIR.Read())
+                    case Portable_GpioPinValue.High:
+                        _mStrIR.Append("0");
+                        break;
+                    case Portable_GpioPinValue.Low:
+                        _mStrIR.Append("1");
+                        break;
+                }
+                if (_mStrIR.Length > 35) // keep at a certain length
+                {
+                    _mStrIR.Remove(0, 1);
+                }
+                if (_mTimerIR < DateTime.Now)
+                {
+                    _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                    if (_mStrIR.Length > 1) //display text
                     {
-                        case Portable_GpioPinValue.High:
-                            _mStrIR.Append("0");
-                            break;
-                        case Portable_GpioPinValue.Low:
-                            _mStrIR.Append("1");
-                            break;
-                    }
-                    if (_mStrIR.Length > 35) // keep at a certain length
-                    {
-                        _mStrIR.Remove(0, 1);
-                    }
-                    if (_mTimerIR < DateTime.Now)
-                    {
-                        _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
-                        if (_mStrIR.Length > 1) //display text
+                        string text = _mStrIR.ToString();
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            string text = _mStrIR.ToString();
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                _mTextIR.Text = text;
-                            });
-                        }
+                            _mTextIR.Text = text;
+                        });
                     }
                 }
-                await Task.Delay(1);
+            }
+
+            if (_mWaitForExit)
+            {
+                Task.Run(() =>
+                {
+                    ReadIR();
+                });
             }
         }
 
