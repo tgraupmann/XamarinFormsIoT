@@ -67,7 +67,7 @@ namespace XamarinFormsIoT
                         _mStrIR.Append("1");
                         break;
                 }
-                if (_mStrIR.Length > 35) // keep at a certain length
+                if (_mStrIR.Length > 1024) // keep at a certain length
                 {
                     _mStrIR.Remove(0, 1);
                 }
