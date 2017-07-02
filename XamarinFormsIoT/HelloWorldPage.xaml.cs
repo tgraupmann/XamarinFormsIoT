@@ -179,7 +179,6 @@ namespace XamarinFormsIoT
                     });
 
                     /*
-
                     // subscribe to changes
                     _mPinIR.AddListenerValueChanged((sender,edge) =>
                     {
@@ -209,25 +208,20 @@ namespace XamarinFormsIoT
                             _mTextIR.Text = _mStrIR.ToString();
                         });
 
-                        if (null != _mPinBlue &&
-                            null != _mPinRed)
+                        switch (edge)
                         {
-                            switch (edge)
-                            {
-                                case Portable_GpioPinEdge.FallingEdge:
-                                    _mPinBlue.Write(Portable_GpioPinValue.Low);
-                                    _mPinRed.Write(Portable_GpioPinValue.High);
-                                    _mPinYellow.Write(Portable_GpioPinValue.Low);
-                                    break;
-                                case Portable_GpioPinEdge.RisingEdge:
-                                    _mPinRed.Write(Portable_GpioPinValue.Low);
-                                    _mPinBlue.Write(Portable_GpioPinValue.High);
-                                    _mPinYellow.Write(Portable_GpioPinValue.High);
-                                    break;
-                            }
+                            case Portable_GpioPinEdge.FallingEdge:
+                                SetBlue(Portable_GpioPinValue.Low);
+                                SetRed(Portable_GpioPinValue.High);
+                                SetYellow(Portable_GpioPinValue.Low);
+                                break;
+                            case Portable_GpioPinEdge.RisingEdge:
+                                SetRed(Portable_GpioPinValue.Low);
+                                SetBlue(Portable_GpioPinValue.High);
+                                SetYellow(Portable_GpioPinValue.High);
+                                break;
                         }
                     });
-
                     */
                 }
             }
@@ -283,11 +277,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickBlueOn(object sender, EventArgs e)
         {
-            if (null != _mPinBlue)
-            {
-                var pinValue = Portable_GpioPinValue.Low;
-                _mPinBlue.Write(pinValue);
-            }
+            SetBlue(Portable_GpioPinValue.Low);
         }
 
         /// <summary>
@@ -297,11 +287,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickBlueOff(object sender, EventArgs e)
         {
-            if (null != _mPinBlue)
-            {
-                var pinValue = Portable_GpioPinValue.High;
-                _mPinBlue.Write(pinValue);
-            }
+            SetBlue(Portable_GpioPinValue.High);
         }
 
         /// <summary>
@@ -311,11 +297,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickRedOn(object sender, EventArgs e)
         {
-            if (null != _mPinRed)
-            {
-                var pinValue = Portable_GpioPinValue.Low;
-                _mPinRed.Write(pinValue);
-            }
+            SetRed(Portable_GpioPinValue.Low);
         }
 
         /// <summary>
@@ -325,11 +307,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickRedOff(object sender, EventArgs e)
         {
-            if (null != _mPinRed)
-            {
-                var pinValue = Portable_GpioPinValue.High;
-                _mPinRed.Write(pinValue);
-            }
+            SetRed(Portable_GpioPinValue.High);
         }
 
         /// <summary>
@@ -339,11 +317,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickYellowOn(object sender, EventArgs e)
         {
-            if (null != _mPinYellow)
-            {
-                var pinValue = Portable_GpioPinValue.Low;
-                _mPinYellow.Write(pinValue);
-            }
+            SetYellow(Portable_GpioPinValue.Low);
         }
 
         /// <summary>
@@ -353,11 +327,7 @@ namespace XamarinFormsIoT
         /// <param name="e"></param>
         private void OnClickYellowOff(object sender, EventArgs e)
         {
-            if (null != _mPinYellow)
-            {
-                var pinValue = Portable_GpioPinValue.High;
-                _mPinYellow.Write(pinValue);
-            }
+            SetYellow(Portable_GpioPinValue.High);
         }
 
         /// <summary>
