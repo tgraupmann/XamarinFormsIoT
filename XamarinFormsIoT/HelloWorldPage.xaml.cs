@@ -73,7 +73,7 @@ namespace XamarinFormsIoT
                 }
                 if (_mTimerIR < DateTime.Now)
                 {
-                    _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                    _mTimerIR = DateTime.Now + TimeSpan.FromMilliseconds(250);
                     if (_mStrIR.Length > 1) //display text
                     {
                         string text = _mStrIR.ToString();
@@ -91,6 +91,30 @@ namespace XamarinFormsIoT
                 {
                     ReadIR();
                 });
+            }
+        }
+
+        void SetBlue(Portable_GpioPinValue value)
+        {
+            if (null != _mPinBlue)
+            {
+                _mPinBlue.Write(value);
+            }
+        }
+
+        void SetRed(Portable_GpioPinValue value)
+        {
+            if (null != _mPinRed)
+            {
+                _mPinRed.Write(value);
+            }
+        }
+
+        void SetYellow(Portable_GpioPinValue value)
+        {
+            if (null != _mPinYellow)
+            {
+                _mPinYellow.Write(value);
             }
         }
 
@@ -127,6 +151,21 @@ namespace XamarinFormsIoT
                 {
                     _mPinYellow.SetDriveMode(Portable_GpioPinDriveMode.Output);
                 }
+
+                // starting LED state
+                SetBlue(Portable_GpioPinValue.Low);
+                SetRed(Portable_GpioPinValue.Low);
+                SetYellow(Portable_GpioPinValue.High);
+
+                // turn off LEDs
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Task.Delay(5000);
+                    SetBlue(Portable_GpioPinValue.High);
+                    SetRed(Portable_GpioPinValue.High);
+                    SetYellow(Portable_GpioPinValue.High);
+
+                });
 
                 // setup ir receiver
                 _mPinIR = _mGpioController.OpenPin(LED_PIN_IR);
@@ -187,21 +226,6 @@ namespace XamarinFormsIoT
                                     break;
                             }
                         }
-
-                        // turn off LEDs
-                        Device.BeginInvokeOnMainThread(async () =>
-                        {
-                            await Task.Delay(1000);
-                            if (null != _mPinBlue &&
-                                null != _mPinRed)
-                            {
-                                _mPinBlue.Write(Portable_GpioPinValue.High);
-                                _mPinRed.Write(Portable_GpioPinValue.High);
-                                _mPinYellow.Write(Portable_GpioPinValue.High);
-                            }
-
-                        });
-
                     });
 
                     */
