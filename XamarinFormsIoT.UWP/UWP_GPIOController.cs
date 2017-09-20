@@ -15,9 +15,16 @@ namespace XamarinFormsIoT
         }
         public Portable_IGpioPin OpenPin(int pin)
         {
-            UWP_GpioPin result = new UWP_GpioPin();
-            result.GpioPin = GpioController.OpenPin(pin);
-            return result;
+            if (GpioController != null)
+            {
+                UWP_GpioPin result = new UWP_GpioPin();
+                result.GpioPin = GpioController.OpenPin(pin);
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
